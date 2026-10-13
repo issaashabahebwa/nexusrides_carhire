@@ -1,9 +1,21 @@
 FROM php:8.2-cli
+
 WORKDIR /app
-RUN apt-get update && apt-get install -y git curl libpng-dev libonig-dev libxml2-dev zip unzip && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+RUN apt-get update && apt-get install -y \
+    git unzip libzip-dev libpng-dev libonig-dev libxml2-dev sqlite3 libsqlite3-dev \
+    && docker-php-ext-install pdo pdo_sqlite zip mbstring
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 COPY . .
+
 RUN composer install --no-dev --optimize-autoloader
-RUN npm install && npm run build || true
+
+RUN mkdir -p database && touch database/database.sqlite
+
+RUN php artisan config:clear
+
 EXPOSE 10000
-CMD php artisan serve --host=0.0.0.0 --port=10000
+
+CMD sh -c "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=10000"
