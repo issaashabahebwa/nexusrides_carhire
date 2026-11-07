@@ -160,6 +160,24 @@
   .pg-hero{padding-bottom:4rem;}
   .pg-hero-badges{display:none;}
   .ab-grid{grid-template-columns:1fr 1fr;}
+  .pg-body{padding-inline:.75rem;gap:1rem;margin-top:1.25rem;}
+  .bk-item{padding:.8rem .85rem;gap:.6rem;flex-wrap:wrap;}
+  .bk-item > div[style*="flex:1"]{flex:1 1 calc(100% - 58px)!important;}
+  .bk-right{flex:1 1 100%;margin-left:58px;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+  .bk-right .bk-amount{margin-top:0;}
+  .ab-grid{padding-inline:.85rem;}
+  .ab-foot{padding-inline:.85rem;flex-wrap:wrap;}
+  .ab-foot .ubtn{min-width:130px;}
+}
+@media(max-width:380px){
+  .pg-stats{grid-template-columns:1fr;gap:.55rem;padding-inline:.75rem;}
+  .pg-stat{padding:.8rem .9rem;}
+  .pg-hero{padding:2rem .85rem 3.5rem;}
+  .pg-hero-btns{gap:.5rem;}
+  .hbtn-gold,.hbtn-ghost{padding:.55rem .8rem;font-size:.78rem;}
+  .ab-grid{gap:.4rem;}
+  .ab-cell{padding:.5rem .55rem;}
+  .ab-cval{font-size:.78rem;overflow-wrap:anywhere;}
 }
 </style>
 @endpush
@@ -330,6 +348,35 @@
     </div>
 
     {{-- Right col — Recent bookings --}}
+    <div class="sec-card">
+      <div class="sc-head">
+        <div class="sc-head-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 14h4m-4 3h7"/></svg>
+          Payment Receipts
+        </div>
+      </div>
+      @forelse($recentPayments as $payment)
+        <div class="bk-item">
+          <div class="notif-ic ni-py" style="flex:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div class="bk-name">{{ $payment->booking->vehicle->name }}</div>
+            <div class="bk-ref">{{ $payment->transaction_id ?? 'Payment #' . $payment->id }} &middot; {{ $payment->paid_at?->format('d M Y') ?? $payment->created_at->format('d M Y') }}</div>
+            <div class="bk-acts">
+              <a href="{{ route('payments.receipt', $payment) }}" class="ba-view" aria-label="Download receipt for {{ $payment->transaction_id ?? 'payment ' . $payment->id }}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/></svg>
+                Download receipt
+              </a>
+            </div>
+          </div>
+          <div class="bk-right"><div class="bk-amount">UGX {{ number_format($payment->amount, 0) }}</div></div>
+        </div>
+      @empty
+        <div class="bk-empty">Receipts for completed payments will appear here.</div>
+      @endforelse
+    </div>
+
     <div class="sec-card">
       <div class="sc-head">
         <div class="sc-head-title">

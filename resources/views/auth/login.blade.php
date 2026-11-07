@@ -5,7 +5,7 @@
 <div class="auth-page">
     <div class="auth-card">
         <div class="auth-card-header">
-            <div class="logo">Nexus<span>Rides</span></div>
+            <img class="auth-logo" src="{{ asset('assets/img/logo.png') }}" alt="NexusRides">
             <p>Sign in to your account</p>
         </div>
         <div class="auth-card-body">
@@ -38,7 +38,7 @@
 
                 <div class="form-group" style="display:flex;align-items:center;gap:.6rem;">
                     <input type="checkbox" id="remember" name="remember" value="1" style="width:16px;height:16px;">
-                    <label for="remember" style="font-size:.9rem;color:#495057;cursor:pointer;margin:0;">Remember me</label>
+                    <label for="remember" style="font-size:.9rem;color:#E0E0E0;cursor:pointer;margin:0;">Remember me</label>
                 </div>
 
                 <button type="submit" class="btn btn-navy btn-block btn-lg" style="margin-top:.5rem;">
@@ -53,7 +53,7 @@
                 <a href="{{ route('register') }}" style="color:var(--navy);font-weight:600;">Create one free</a>
             </p>
 
-            <div style="margin-top:1.5rem;padding:1rem;background:#f8f9fa;border-radius:8px;font-size:.83rem;color:#6c757d;">
+            <div style="margin-top:1.5rem;padding:1rem;background:#111B36;border-radius:8px;font-size:.83rem;color:#B8C2D3;">
                 <strong>Demo credentials:</strong><br>
                 Admin: admin@nexusrides.ug / password<br>
                 Customer: customer@nexusrides.ug / password

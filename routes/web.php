@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin;
 
 // ─── Public Routes ────────────────────────────────────────────────────────────
@@ -27,6 +28,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
+    // Account profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+
     // Bookings
     Route::get('/bookings',               [BookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/create',        [BookingController::class, 'create'])->name('bookings.create');
@@ -37,6 +43,7 @@ Route::middleware('auth')->group(function () {
     // Payments
     Route::get('/bookings/{booking}/pay',  [PaymentController::class, 'create'])->name('payments.create');
     Route::post('/bookings/{booking}/pay', [PaymentController::class, 'store'])->name('payments.store');
+    Route::get('/payments/{payment}/receipt', [PaymentController::class, 'receipt'])->name('payments.receipt');
 });
 
 // ─── Admin Routes ─────────────────────────────────────────────────────────────

@@ -28,9 +28,10 @@ class HomeController extends Controller
         $user     = auth()->user();
         $bookings = $user->bookings()->with('vehicle')->latest()->take(5)->get();
         $totalSpent = $user->payments()->where('status', 'completed')->sum('amount');
+        $recentPayments = $user->payments()->with('booking.vehicle')->where('status', 'completed')->latest('paid_at')->take(5)->get();
         $activeBooking = $user->bookings()->whereIn('status', ['approved', 'active'])->with('vehicle')->first();
         $notifications = $user->notifications()->latest()->take(5)->get();
 
-        return view('dashboard', compact('user', 'bookings', 'totalSpent', 'activeBooking', 'notifications'));
+        return view('dashboard', compact('user', 'bookings', 'totalSpent', 'recentPayments', 'activeBooking', 'notifications'));
     }
 }

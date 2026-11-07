@@ -7,6 +7,7 @@ use App\Models\Notification;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PaymentController extends Controller
 {
@@ -65,5 +66,17 @@ class PaymentController extends Controller
 
         return redirect()->route('bookings.show', $booking)
             ->with('success', 'Payment successful! Transaction ID: ' . $transactionId);
+    }
+
+    public function receipt(Payment $payment)
+    {
+        abort_unless($payment->user_id === Auth::id(), 404);
+        abort_unless($payment->status === 'completed', 404);
+
+        $payment->load(['user', 'booking.vehicle']);
+        $pdf = Pdf::loadView('payments.receipt', compact('payment'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('nexusrides-receipt-' . $payment->id . '.pdf');
     }
 }

@@ -5,7 +5,7 @@
 <div class="auth-page" style="padding:3rem 1rem;">
     <div class="auth-card" style="max-width:540px;">
         <div class="auth-card-header">
-            <div class="logo">Nexus<span>Rides</span></div>
+            <img class="auth-logo" src="{{ asset('assets/img/logo.png') }}" alt="NexusRides">
             <p>Create your free account</p>
         </div>
         <div class="auth-card-body">
